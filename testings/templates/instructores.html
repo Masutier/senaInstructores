@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+    
+<div class="container mb-5">
+
+    <div class="col-12 mx-auto">
+        <div class="col-12 mx-auto mt-5">
+            <img src="/static/img/CGMLTI.png" class="imgpage" alt="XLS" />
+        </div>
+
+        <div class="col-9 mx-auto">
+            <div class="col-11 mx-auto mt-5">
+                <h1>Información del Aprendiz</h1>
+            </div>
+
+            <div class="col-6 mx-auto mt-5">
+                <h4>Ficha:  {{aprendiz[1]}}</h4>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mx-auto mt-3">
+                    <h4>Nombre:  {{aprendiz[2]}}</h4>
+                </div>
+    
+                <div class="col-6 mx-auto mt-3">
+                    <h4>Apellidos:  {{aprendiz[3]}}</h4>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mx-auto mt-3">
+                    <h4>Id:  {{aprendiz[0]}}</h4>
+                </div>
+    
+                <div class="col-6 mx-auto mt-3">
+                    <h4>Doc Identidad:  {{aprendiz[5]}}</h4>
+                </div>
+            </div>
+
+            <hr>
+
+            <form action="{{ url_for('testing') }}" method=”POST”> 
+                {{ form.csrf_token }}
+                {% for instructor in ListaInstructores %}
+                
+                    <div class="col-lg-7 col-sm-10 mx-auto">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="instructor" id="instructor" value="{{ instructor[9] }}">
+                            <label class="form-check-label" for="instructor">{{ instructor[0] }} {{ instructor[7] }} {{ instructor[8] }}</label>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+                <input class="form-check-input" type="hidden" name="aprendiz" id="aprendiz" value="{{aprendiz[5]}}">
+
+
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" type="submit">Procesar</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

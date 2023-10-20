@@ -1,0 +1,168 @@
+import os
+import csv, json
+import pandas as pd
+from datetime import datetime, date
+from flask import Flask, flash, render_template as render, redirect, url_for, request, jsonify
+import sqlite3 as sql3
+from flask_wtf import FlaskForm
+from wtforms import StringField, IntegerField, RadioField, SubmitField
+from wtforms.validators import InputRequired, Length
+
+with open("/home/gabriel/prog/json_config/instructores.json") as config_file:
+    sec_config = json.load(config_file)
+
+app = Flask(__name__, static_url_path='/static')
+app.secret_key = sec_config['SECRET_KEY']
+
+# Folder to aprendiz sqlite3
+Sqlite_aprendiz_destiny_path = "../fichas_evaluacion_instructores/laprend/aprendiz.db"
+# Folder to save csvs apprentice
+Aprendice_destiny_path = "../fichas_evaluacion_instructores/laprend/"
+
+# Folder to instructor sqlite3
+Sqlite_instructor_destiny_path = "../fichas_evaluacion_instructores/linstr/instructor.db"
+# Folder to save csvs instructor
+instructor_destiny_path = "../fichas_evaluacion_instructores/linstr/"
+# Folder to testing instructors sqlite3
+Sqlite_testing_destiny_path = "../fichas_evaluacion_instructores/testing.db"
+
+
+class AprendizInfoForm(FlaskForm):
+    ficha = StringField('Ficha', validators=[InputRequired(), Length(min=7, max=7)])
+    name = StringField('Nombre', validators=[InputRequired(), Length(min=2, max=100)])
+    lastname = StringField('Apellidos', validators=[InputRequired(), Length(min=5, max=100)])
+    tipoDoc = StringField('Tipo Documento', validators=[InputRequired(), Length(min=1, max=3)])
+    numdoc = IntegerField('Numero de Documento', validators=[InputRequired()])
+
+
+class AprendizEInstructor(FlaskForm):
+    aprendizId = IntegerField()
+    instructorId = IntegerField()
+
+
+class preguntasForm(FlaskForm):
+    ficha = StringField('Ficha', validators=[InputRequired(), Length(min=7, max=7)])
+    aprendizNumDoc = IntegerField('Numero de Documento', validators=[InputRequired()])
+    no_identificacion_instructor = IntegerField('Numero de Documento', validators=[InputRequired()])
+    p01 = RadioField('P01', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+    p02 = RadioField('P02', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+    p03 = RadioField('P03', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+    p04 = RadioField('P04', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+    p05 = RadioField('P05', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+    p06 = RadioField('P06', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+    p07 = RadioField('P07', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+    p08 = RadioField('P08', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+    p09 = RadioField('P09', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+    p10 = RadioField('P10', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+    p11 = RadioField('P11', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+    p12 = RadioField('P12', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
+
+
+@app.route('/', methods=['GET', 'POST'])
+def home2():
+    form = AprendizInfoForm()
+    
+    return render("home2.html", title="Home", form=form)
+
+
+@app.route('/questionario', methods=['GET', 'POST'])
+def questionario():
+    aprendiz = []
+    ListaInstructores = []
+    # Datos del Aprendiz y numero de ficha
+    ficha = request.form['ficha']
+    name = request.form['name']
+    lastname = request.form['lastname']
+    document = request.form['tipoDoc']
+    numdoc = request.form['numdoc']
+
+    for i in request.form.values():
+        aprendiz.append(i)
+
+    # Buscar el aprendiz en database para verificacion
+    sqlQuery = f"""SELECT * FROM aprendices WHERE numero_de_documento = ? """
+    conn = sql3.connect(Sqlite_aprendiz_destiny_path)
+    cursor = conn.cursor()
+    aprend = cursor.execute(sqlQuery, (numdoc,)).fetchone()
+    conn.close()
+
+    if aprend:
+        # Buscar lista de Instructores que dictan en la ficha
+        sqlQuery = f"""SELECT * FROM instructores WHERE ficha = ? """
+        conn = sql3.connect(Sqlite_instructor_destiny_path)
+        cursor = conn.cursor()
+        instructores = cursor.execute(sqlQuery, (ficha,)).fetchall()
+        conn.close()
+
+        if instructores:
+            for instructor in instructores:
+                if instructor not in ListaInstructores:
+                    ListaInstructores.append(instructor)
+
+            form = AprendizEInstructor()
+            
+            return render("instructores.html", title="Instructores", ListaInstructores=ListaInstructores, aprendiz=aprendiz, form=form)
+        else:
+            flash("El numero de ficha no tiene asignados instructores o no es correcta")
+            return redirect(url_for("home2"))
+    else:
+        flash("No existe el aprendiz o el numero de cedula no es correcto")
+        return redirect(url_for("home2"))
+
+
+@app.route('/testing', methods=['GET', 'POST'])
+def testing():
+    instructorId = request.values.get('instructor')
+    aprendizId = request.values.get('aprendiz')
+
+    form = preguntasForm()
+
+    # Buscar el aprendiz en database para verificacion
+    sqlQuery = f"""SELECT * FROM aprendices WHERE numero_de_documento = ? """
+    conn = sql3.connect(Sqlite_aprendiz_destiny_path)
+    cursor = conn.cursor()
+    aprendiz = cursor.execute(sqlQuery, (aprendizId,)).fetchone()
+    conn.close()
+
+    # Buscar lista de Instructores que dictan en la ficha
+    sqlQuery = f"""SELECT * FROM instructores WHERE no_identificacion_instructor = ? """
+    conn = sql3.connect(Sqlite_instructor_destiny_path)
+    cursor = conn.cursor()
+    instructor = cursor.execute(sqlQuery, (instructorId,)).fetchone()
+    conn.close()
+
+    return render("questionario.html", title="Questionario", form=form, aprendiz=aprendiz, instructor=instructor)
+
+
+@app.route('/saveTest', methods=['GET', 'POST'])
+def saveTest():
+    ficha = request.values.get('ficha')
+    instructor = request.values.get('instructorid')
+    aprendiz = request.values.get('aprendizid')
+    p01 = request.values.get('p01')
+    p02 = request.values.get('p02')
+    p03 = request.values.get('p03')
+    p04 = request.values.get('p04')
+    p05 = request.values.get('p05')
+    p06 = request.values.get('p06')
+    p07 = request.values.get('p07')
+    p08 = request.values.get('p08')
+    p09 = request.values.get('p09')
+    p10 = request.values.get('p10')
+    p11 = request.values.get('p11')
+    p12 = request.values.get('p12')
+
+    conn = sql3.connect(Sqlite_testing_destiny_path)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO testing (ficha,aprendiz,instructor,p01,p02,p03,p04,p05,p06,p07,p08,p09,p10,p11,p12) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (ficha,aprendiz,instructor,p01,p02,p03,p04,p05,p06,p07,p08,p09,p10,p11,p12))
+    conn.commit()
+    conn.close()
+
+    flash("El cuestionario se gravo satisfactoriamente!")
+    return redirect(url_for("home2"))
+
+
+if __name__ == '__main__':
+    #app.run(debug=True, host="172.16.170.128", port=8080)
+    app.run(debug=True, host="localhost", port=5000)
+

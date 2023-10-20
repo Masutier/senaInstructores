@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+    
+<div class="container mb-5">
+
+    <div class="col-9 mx-auto">
+        <div class="row">
+            <div class="col-3 mx-auto mt-5">
+                <img src="/static/img/xls.png" class="imgpage" alt="XLS" />
+            </div>
+
+            <div class="col-9 mx-auto">
+                <div class="col-11 mx-auto mt-5">
+                    <h1>Carga de .xls a Postgres</h1>
+                </div>
+                <div class="col-11 mx-auto mt-3 mb-5">
+                    <p>Aplicativo para manipulación de listados en .xls de instructores y aprendices.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="col-12 mx-auto mt-5">
+        <div class="row">
+            <div class="col-7 mx-auto mb-3">
+
+                <div class="col-12 mx-auto">
+                    <h2>Subir el archivo de Aprendices</h2>
+                    <h5>Subir varios archivos a la vez, los archivos deben estar en: </h5>
+                    <h6>"~/Downloads/fichas evaluacion instructores"</h6>
+                    <div class="mt-4 mb-3 ">
+                        <div class="col-7 mx-auto">
+                            <div class="d-grid gap-2">
+                                <a class="btn btn-primary btn-sm btn-color" href="{{ url_for('aprendiz') }}">Ejecutar Comandos</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="col-12 mx-auto">
+                    <h2>Subir el archivo de Instructores</h2>
+                    <form action="/instructor" method="POST" enctype="multipart/form-data">
+
+                        <div class="mb-3">
+                            <label for="fileinn" class="form-label">El Archivo</label>
+                            <input class="form-control" type="file" name="fileinn">
+                        </div>
+                        <div class="col-7 mx-auto">
+                            <div class="d-grid gap-2">
+                                <button id="butSpin" class="btn btn-primary btn-sm btn-color mt-3" type="submit" name="submit">Procesar</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="col-4">
+                <div class="col-11 mx-auto mb-3">
+                    <h3>Plantillas Para Diligenciar</h3>
+                    <hr>
+                    <p>Plantilla carga masiva de aprendices</p>
+                    <a class="btn btn-success" href="">Reporte de Aprendices Ficha xxxxxxx.xlsx</a>
+                </div>
+                <hr>
+                <div class="col-11 mx-auto mb-3">
+                    <p>Plantilla carga masiva de Instructores</p>
+                    <a class="btn btn-success" href="">Recopilación Información Evaluación Instructores XXX Semestre XXXX.xlsx</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
