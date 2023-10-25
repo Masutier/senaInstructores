@@ -3,122 +3,118 @@
 
 {% block content %}
     
-<div class="container mb-5">
-
-    <div class="col-12 mx-auto">
-        <div class="col-12 mx-auto mt-5">
-            <img src="/static/img/CGMLTI.png" class="imgpage" alt="XLS" />
-        </div>
-
-        <div class="col-9 mx-auto">
-            <div class="col-11 mx-auto mt-5">
-                <h1>Información del Aprendiz</h1>
-            </div>
-            <div class="col-11 mx-auto mt-3 mb-5">
-                <p>Aplicativo para valoración de los instructores por parte de los aprendices.</p>
-            </div>
-        </div>
-
+<div class="col-12 mx-auto ">
+    <div class="col-11 mx-auto">
+        <img src="/static/img/CGMLTI.png" class="imgpage" alt="XLS" />
     </div>
 
-    <hr>
+    <div class="col-9 mx-auto">
+        <div class="col-11 mx-auto mt-5 c">
+            <h1>Aplicativo para valoración de los instructores por parte de los aprendices.</h1>
+        </div>
+    </div>
+</div>
 
-    <div class="col-12 mx-auto mt-5">
-        <div class="row">
-            <div class="col-7 mx-auto mb-3">
+<hr>
 
-                <form action="questionario" method="POST">
-                    {{ form.csrf_token }}
-        
+<div class="col-12 mx-auto mt-5 mb-5">
+    <div class="col-6 mx-auto mt-3 mb-5">
+        <h3>Información del Aprendiz</h3>
+    </div>
+        <div class="col-7 mx-auto backs">
+
+            <form action="questionario" method="POST">
+                {{ form.csrf_token }}
+    
+                <div class="col-lg-5 col-sm-10 mx-auto">
+                    <div class="form-group">
+                        {{ form.ficha.label }}
+                        {{ form.ficha(class_="form-control", size=32) }}
+                    </div>
+                </div>
+    
+                {% if form.ficha.errors %}
+                    <ul class="errors">
+                        {% for error in form.ficha.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+    
+                <div class="row mt-4">
                     <div class="col-lg-5 col-sm-10 mx-auto">
                         <div class="form-group">
-                            {{ form.ficha.label }}
-                            {{ form.ficha(class_="form-control", size=32) }}
+                            {{ form.name.label }}
+                            {{ form.name(class_="form-control", size=32) }}
                         </div>
                     </div>
-        
-                    {% if form.ficha.errors %}
+    
+                    {% if form.name.errors %}
                         <ul class="errors">
-                            {% for error in form.ficha.errors %}
+                            {% for error in form.name.errors %}
                                 <li>{{ error }}</li>
                             {% endfor %}
                         </ul>
                     {% endif %}
-        
-                    <div class="row mt-4">
-                        <div class="col-lg-5 col-sm-10 mx-auto">
-                            <div class="form-group">
-                                {{ form.name.label }}
-                                {{ form.name(class_="form-control", size=32) }}
-                            </div>
+    
+                    <div class="col-lg-5 col-sm-10 mx-auto">
+                        <div class="form-group">
+                            {{ form.lastname.label }}
+                            {{ form.lastname(class_="form-control", size=32) }}
                         </div>
-        
-                        {% if form.name.errors %}
-                            <ul class="errors">
-                                {% for error in form.name.errors %}
-                                    <li>{{ error }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-        
-                        <div class="col-lg-5 col-sm-10 mx-auto">
-                            <div class="form-group">
-                                {{ form.lastname.label }}
-                                {{ form.lastname(class_="form-control", size=32) }}
-                            </div>
+                    </div>
+    
+                    {% if form.lastname.errors %}
+                        <ul class="errors">
+                            {% for error in form.lastname.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+    
+                <div class="row mt-4">
+                    <div class="col-lg-5 col-sm-10 mx-auto">
+                        <div class="form-group">
+                            {{ form.tipoDoc.label }}
+                            {{ form.tipoDoc(class_="form-control", size=32) }}
                         </div>
-        
-                        {% if form.lastname.errors %}
-                            <ul class="errors">
-                                {% for error in form.lastname.errors %}
-                                    <li>{{ error }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
+                    </div>
+    
+                    {% if form.tipoDoc.errors %}
+                        <ul class="errors">
+                            {% for error in form.tipoDoc.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+    
+                    <div class="col-lg-5 col-sm-10 mx-auto">
+                        <div class="form-group">
+                            {{ form.numdoc.label }}
+                            {{ form.numdoc(class_="form-control", size=32) }}
+                        </div>
                     </div>
         
-                    <div class="row mt-4">
-                        <div class="col-lg-5 col-sm-10 mx-auto">
-                            <div class="form-group">
-                                {{ form.tipoDoc.label }}
-                                {{ form.tipoDoc(class_="form-control", size=32) }}
-                            </div>
-                        </div>
-        
-                        {% if form.tipoDoc.errors %}
-                            <ul class="errors">
-                                {% for error in form.tipoDoc.errors %}
-                                    <li>{{ error }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-        
-                        <div class="col-lg-5 col-sm-10 mx-auto">
-                            <div class="form-group">
-                                {{ form.numdoc.label }}
-                                {{ form.numdoc(class_="form-control", size=32) }}
-                            </div>
-                        </div>
-            
-                        {% if form.numdoc.errors %}
-                            <ul class="errors">
-                                {% for error in form.numdoc.errors %}
-                                    <li>{{ error }}</li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </div>
+                    {% if form.numdoc.errors %}
+                        <ul class="errors">
+                            {% for error in form.numdoc.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
 
-                    <div class="col-lg-7 col-sm-10 mx-auto d-grid gap-2 mt-5 mb-5">
-                        <input class="btn btn-success" type="submit" value="Aplicar">
-                    </div>
+                <div class="col-lg-7 col-sm-10 mx-auto d-grid gap-2 mt-5">
+                    <input class="btn btn-success mb-5" type="submit" value="Aplicar">
+                </div>
 
-                </form>
-
-            </div>
+            </form>
 
         </div>
+
     </div>
 </div>
+
 
 {% endblock %}

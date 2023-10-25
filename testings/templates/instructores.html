@@ -6,64 +6,56 @@
 <div class="container mb-5">
 
     <div class="col-12 mx-auto">
-        <div class="col-12 mx-auto mt-5">
+        <div class="col-12 mx-auto">
             <img src="/static/img/CGMLTI.png" class="imgpage" alt="XLS" />
         </div>
+        
 
-        <div class="col-9 mx-auto">
-            <div class="col-11 mx-auto mt-5">
-                <h1>Información del Aprendiz</h1>
-            </div>
-
-            <div class="col-6 mx-auto mt-5">
-                <h4>Ficha:  {{aprendiz[1]}}</h4>
-            </div>
-
-            <div class="row">
-                <div class="col-6 mx-auto mt-3">
-                    <h4>Nombre:  {{aprendiz[2]}}</h4>
-                </div>
-    
-                <div class="col-6 mx-auto mt-3">
-                    <h4>Apellidos:  {{aprendiz[3]}}</h4>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-6 mx-auto mt-3">
-                    <h4>Id:  {{aprendiz[0]}}</h4>
-                </div>
-    
-                <div class="col-6 mx-auto mt-3">
-                    <h4>Doc Identidad:  {{aprendiz[5]}}</h4>
-                </div>
-            </div>
-
-            <hr>
-
-            <form action="{{ url_for('testing') }}" method=”POST”> 
-                {{ form.csrf_token }}
-                {% for instructor in ListaInstructores %}
-                
-                    <div class="col-lg-7 col-sm-10 mx-auto">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="instructor" id="instructor" value="{{ instructor[9] }}">
-                            <label class="form-check-label" for="instructor">{{ instructor[0] }} {{ instructor[7] }} {{ instructor[8] }}</label>
-                        </div>
+        <div class="col-10 mx-auto m-5 p-5 backs">
+            <div class="row ">
+                <div class="col-6 mx-auto ">
+                    <div class="col-11 mx-auto mb-5 c">
+                        <h3>Información del Aprendiz</h3>
                     </div>
 
-                {% endfor %}
-
-                <input class="form-check-input" type="hidden" name="aprendiz" id="aprendiz" value="{{aprendiz[5]}}">
-
-
-                <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="submit">Procesar</button>
+                    <div class="col-9 mx-auto mb-3">
+                        <h5>Ficha:  {{aprendiz[1]}}</h5>
+                        <h5>Doc Identidad:  {{aprendiz[5]}}</h5>
+                        <h5>Nombre:  {{aprendiz[2]}}</h5>
+                        <h5>Apellidos:  {{aprendiz[3]}}</h5>
+                    </div>
                 </div>
 
-            </form>
+                <div class="col-6 mx-auto">
+                    <div class="col-11 mx-auto mb-5 c">
+                        <h3>Instructores por Evaluar</h3>
+                    </div>
+                    <form action="{{ url_for('testing') }}" method=”POST”> 
+                        {{ form.csrf_token }}
+                        {% for instructor in ListaInstructores %}
+                        
+                            <div class="col-lg-11 col-sm-10 mx-auto">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="instructor" id="instructor" value="{{ instructor[9] }}">
+                                    <h6><label class="form-check-label" for="instructor">{{ instructor[0] }} {{ instructor[7] }} {{ instructor[8] }}</label></h6>
+                                </div>
+                            </div>
 
+                        {% endfor %}
+
+                        <input class="form-check-input" type="hidden" name="aprendiz" id="aprendiz" value="{{aprendiz[5]}}">
+
+
+                        <div class="d-grid gap-2 col-8 mx-auto mt-5">
+                            <button class="btn btn-success" type="submit">Evaluar</button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
         </div>
+        <hr>
     </div>
 
 </div>

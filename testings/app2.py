@@ -115,23 +115,27 @@ def testing():
     instructorId = request.values.get('instructor')
     aprendizId = request.values.get('aprendiz')
 
-    form = preguntasForm()
+    if instructorId:
+        form = preguntasForm()
 
-    # Buscar el aprendiz en database para verificacion
-    sqlQuery = f"""SELECT * FROM aprendices WHERE numero_de_documento = ? """
-    conn = sql3.connect(Sqlite_aprendiz_destiny_path)
-    cursor = conn.cursor()
-    aprendiz = cursor.execute(sqlQuery, (aprendizId,)).fetchone()
-    conn.close()
+        # Buscar el aprendiz en database para verificacion
+        sqlQuery = f"""SELECT * FROM aprendices WHERE numero_de_documento = ? """
+        conn = sql3.connect(Sqlite_aprendiz_destiny_path)
+        cursor = conn.cursor()
+        aprendiz = cursor.execute(sqlQuery, (aprendizId,)).fetchone()
+        conn.close()
 
-    # Buscar lista de Instructores que dictan en la ficha
-    sqlQuery = f"""SELECT * FROM instructores WHERE no_identificacion_instructor = ? """
-    conn = sql3.connect(Sqlite_instructor_destiny_path)
-    cursor = conn.cursor()
-    instructor = cursor.execute(sqlQuery, (instructorId,)).fetchone()
-    conn.close()
+        # Buscar lista de Instructores que dictan en la ficha
+        sqlQuery = f"""SELECT * FROM instructores WHERE no_identificacion_instructor = ? """
+        conn = sql3.connect(Sqlite_instructor_destiny_path)
+        cursor = conn.cursor()
+        instructor = cursor.execute(sqlQuery, (instructorId,)).fetchone()
+        conn.close()
 
-    return render("questionario.html", title="Questionario", form=form, aprendiz=aprendiz, instructor=instructor)
+        return render("questionario.html", title="Questionario", form=form, aprendiz=aprendiz, instructor=instructor)
+    else:
+        flash("Tienes que seleccionar un Instructor")
+        return redirect(url_for("home2"))
 
 
 @app.route('/saveTest', methods=['GET', 'POST'])
@@ -163,6 +167,6 @@ def saveTest():
 
 
 if __name__ == '__main__':
-    #app.run(debug=True, host="172.16.170.128", port=8080)
+    #app.run(debug=True, host="172.16.170.60", port=8080)
     app.run(debug=True, host="localhost", port=5000)
 

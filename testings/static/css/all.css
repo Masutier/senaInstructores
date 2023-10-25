@@ -2,9 +2,15 @@
 
 body {
     color: black;
-    background: #98ee70;
-    background: -webkit-linear-gradient(to right, #c7f5b1, #98ee70, #287e01);
-    background: linear-gradient(to left, #a8f187, #7cee47, #39af02);
+
+}
+.backs{
+    border-radius: 2rem;
+    padding-top: 3rem;
+    color: white;
+    background: #F76300;
+    background: -webkit-linear-gradient(to right, #f58b44, #F76300, #c44f01);
+    background: linear-gradient(to left, #f58b44, #F76300, #c44f01);
 }
 .borde {
     border: solid 1px black !important;
@@ -37,6 +43,11 @@ body {
 }
 .alrig{
     text-align: right
+}
+
+.fixed2 {
+    background-image: url('../img/backgrounds/vector3.jpg');
+    position: fixed;
 }
 
 /* navbart */
