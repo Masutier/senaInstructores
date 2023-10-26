@@ -62,13 +62,17 @@ class preguntasForm(FlaskForm):
 def home2():
     form = AprendizInfoForm()
     
-    return render("home2.html", title="Home", form=form)
+    return render("home2.html", title="Instructores", form=form)
 
 
 @app.route('/questionario', methods=['GET', 'POST'])
 def questionario():
-    aprendiz = []
+    aprendix = []
     ListaInstructores = []
+    allInst = []
+    instructoresFaltan = []
+
+
     # Datos del Aprendiz y numero de ficha
     ficha = request.form['ficha']
     name = request.form['name']
@@ -77,36 +81,52 @@ def questionario():
     numdoc = request.form['numdoc']
 
     for i in request.form.values():
-        aprendiz.append(i)
+        aprendix.append(i)
 
     # Buscar el aprendiz en database para verificacion
     sqlQuery = f"""SELECT * FROM aprendices WHERE numero_de_documento = ? """
-    conn = sql3.connect(Sqlite_aprendiz_destiny_path)
-    cursor = conn.cursor()
+    conn1 = sql3.connect(Sqlite_aprendiz_destiny_path)
+    cursor = conn1.cursor()
     aprend = cursor.execute(sqlQuery, (numdoc,)).fetchone()
-    conn.close()
+    conn1.close()
 
     if aprend:
         # Buscar lista de Instructores que dictan en la ficha
         sqlQuery = f"""SELECT * FROM instructores WHERE ficha = ? """
-        conn = sql3.connect(Sqlite_instructor_destiny_path)
-        cursor = conn.cursor()
+        conn2 = sql3.connect(Sqlite_instructor_destiny_path)
+        cursor = conn2.cursor()
         instructores = cursor.execute(sqlQuery, (ficha,)).fetchall()
-        conn.close()
+        conn2.close()
 
         if instructores:
             for instructor in instructores:
                 if instructor not in ListaInstructores:
                     ListaInstructores.append(instructor)
 
+            # Buscar si el instructor ya fue calificado por el aprendiz
+            sqlQuery = f"""SELECT * FROM testing WHERE aprendiz = ? """
+            conn3 = sql3.connect(Sqlite_testing_destiny_path)
+            cursor = conn3.cursor()
+            tested = cursor.execute(sqlQuery, (aprend[1],)).fetchall()
+            conn3.close()
+
+            for i in ListaInstructores:
+                for j in tested:
+                    if str(i[9]) == j[2]:
+                        allInst.append(i)
+
+            for l in ListaInstructores:
+                if l not in allInst:
+                    instructoresFaltan.append(l)
+            
             form = AprendizEInstructor()
             
-            return render("instructores.html", title="Instructores", ListaInstructores=ListaInstructores, aprendiz=aprendiz, form=form)
+            return render("instructores.html", title="Instructores", instructoresFaltan=instructoresFaltan, aprendix=aprendix, form=form)
         else:
             flash("El numero de ficha no tiene asignados instructores o no es correcta")
             return redirect(url_for("home2"))
     else:
-        flash("No existe el aprendiz o el numero de cedula no es correcto")
+        flash("El numero de cedula no es correcto o no esta registrado")
         return redirect(url_for("home2"))
 
 
@@ -156,14 +176,20 @@ def saveTest():
     p11 = request.values.get('p11')
     p12 = request.values.get('p12')
 
-    conn = sql3.connect(Sqlite_testing_destiny_path)
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO testing (ficha,aprendiz,instructor,p01,p02,p03,p04,p05,p06,p07,p08,p09,p10,p11,p12) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (ficha,aprendiz,instructor,p01,p02,p03,p04,p05,p06,p07,p08,p09,p10,p11,p12))
-    conn.commit()
-    conn.close()
+    print(p01, "--", p02)
 
-    flash("El cuestionario se gravo satisfactoriamente!")
-    return redirect(url_for("home2"))
+    if not p01 or not p05 or not p12:
+        flash("Te faltaron algunas preguntas por responder, intentalo otra vez")
+        return redirect(url_for("home2"))
+    else:
+        conn = sql3.connect(Sqlite_testing_destiny_path)
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO testing (ficha,aprendiz,instructor,p01,p02,p03,p04,p05,p06,p07,p08,p09,p10,p11,p12) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", (ficha,aprendiz,instructor,p01,p02,p03,p04,p05,p06,p07,p08,p09,p10,p11,p12))
+        conn.commit()
+        conn.close()
+
+        flash("El cuestionario se gravo satisfactoriamente!")
+        return redirect(url_for("home2"))
 
 
 if __name__ == '__main__':

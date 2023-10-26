@@ -19,10 +19,10 @@
                     </div>
 
                     <div class="col-9 mx-auto mb-3">
-                        <h5>Ficha:  {{aprendiz[1]}}</h5>
-                        <h5>Doc Identidad:  {{aprendiz[5]}}</h5>
-                        <h5>Nombre:  {{aprendiz[2]}}</h5>
-                        <h5>Apellidos:  {{aprendiz[3]}}</h5>
+                        <h5>Ficha:  {{aprendix[1]}}</h5>
+                        <h5>Doc Identidad:  {{aprendix[5]}}</h5>
+                        <h5>Nombre:  {{aprendix[2]}}</h5>
+                        <h5>Apellidos:  {{aprendix[3]}}</h5>
                     </div>
                 </div>
 
@@ -32,7 +32,7 @@
                     </div>
                     <form action="{{ url_for('testing') }}" method=”POST”> 
                         {{ form.csrf_token }}
-                        {% for instructor in ListaInstructores %}
+                        {% for instructor in instructoresFaltan %}
                         
                             <div class="col-lg-11 col-sm-10 mx-auto">
                                 <div class="form-check mb-2">
@@ -43,11 +43,11 @@
 
                         {% endfor %}
 
-                        <input class="form-check-input" type="hidden" name="aprendiz" id="aprendiz" value="{{aprendiz[5]}}">
+                        <input class="form-check-input" type="hidden" name="aprendiz" id="aprendiz" value="{{aprendix[5]}}">
 
 
                         <div class="d-grid gap-2 col-8 mx-auto mt-5">
-                            <button class="btn btn-success" type="submit">Evaluar</button>
+                            <button class="btn btn-dark" type="submit">Evaluar</button>
                         </div>
 
                     </form>
