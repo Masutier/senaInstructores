@@ -37,6 +37,10 @@ def semestre():
     return newDir
 
 
+def takeFicha(elem):
+    return elem[2]
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
 
@@ -45,30 +49,96 @@ def home():
 
 @app.route('/aprendiz', methods=['GET', 'POST'])
 def aprendiz():
-    sqlQuery = f"""
-    
-    SELECT * FROM aprendices"""
+    fichas = []
+    sqlQuery = f"""SELECT * FROM aprendices"""
 
     conn = sql3.connect(Sqlite_aprendiz_destiny_path)
     cursor = conn.cursor()
     rows = cursor.execute(sqlQuery).fetchall()
+    cant = len(rows)
+    for row in rows:
+        if row[0] not in fichas:
+            fichas.append(row[0])
+    fichas.sort()
 
-    return render("aprendiz.html", title="Aprendices", rows=rows)
+    return render("aprendiz.html", title="Aprendices", cant=cant, fichas=fichas, rows=rows)
 
 
 @app.route('/instructor', methods=['GET', 'POST'])
 def instructor():
+    instructores = []
     sqlQuery = f"""SELECT * FROM instructores ORDER BY nombre_del_instructor ASC"""
 
     conn = sql3.connect(Sqlite_instructor_destiny_path)
     cursor = conn.cursor()
     rows = cursor.execute(sqlQuery).fetchall()
 
-    return render("instructor.html", title="Instructores", rows=rows)
+    for row in rows:
+        instruc = [row[7], row[8]]
+        if instruc not in instructores:
+            instructores.append(instruc)
+    
+    cant = len(instructores)
+    rows.sort(key=takeFicha)
+
+    return render("instructor.html", title="Instructores", cant=cant, rows=rows)
 
 
-@app.route('/loadAprendices', methods=['GET', 'POST'])
-def loadAprendices():
+@app.route('/loadAprendicesOne', methods=['GET', 'POST'])
+def loadAprendicesOne():
+    allAprendiz = []
+
+    if request.method == "POST":
+            # crear directorio si no existe
+        endDir = crearAprendizFolder()
+
+            # Recibe file y separa nombre de la extension
+        fileinn = request.files.get("aprendfileinn")
+        namefile = fileinn.filename
+        filenamex = namefile.split('.')
+
+        if filenamex[1] == "csv":
+            df = pd.read_csv(fileinn, index_col=False)
+        elif filenamex[1] == "xls":
+            df = pd.read_excel(fileinn)
+        elif filenamex[1] == "xlsx":
+            df = pd.read_excel(fileinn)
+        elif filenamex[1] == "ods":
+            df = pd.read_excel(fileinn, engine="odf")
+        else:
+            flash("El archivo no es valido, revise que sea .csv, .xls, .xlsx o .ods")
+            return redirect("/")
+
+            # Remove unwanted rows
+        df.drop(df.index[:3], inplace=True)
+        df.reset_index(drop=True, inplace=True)
+        df.rename(columns=df.iloc[0], inplace = True)
+        df.drop(df.index[0], inplace = True)
+
+            # Remove unwanted columns
+        df.drop(df.iloc[:, 16:], inplace=True, axis=1)
+        df.drop(df.iloc[:, 5:10], inplace=True, axis=1)
+        df.drop(df.iloc[:, 0:4], inplace=True, axis=1)
+        df.drop(df.index[(df["ESTADO_APRENDIZ"] == "Aplazado")],axis=0,inplace=True)
+        df.drop(df.index[(df["ESTADO_APRENDIZ"] == "Cancelado")],axis=0,inplace=True)
+        df.drop(df.index[(df["ESTADO_APRENDIZ"] == "Certificado")],axis=0,inplace=True)
+        df.drop(df.index[(df["ESTADO_APRENDIZ"] == "Retiro voluntario")],axis=0,inplace=True)
+
+            # save to csv
+        df.to_csv('../fichas_evaluacion_instructores/laprend/II_SEM_2023/aprendices.csv', index = False)
+
+            # DATABASE
+        conn = sql3.connect(Sqlite_aprendiz_destiny_path)
+        df.to_sql(name="aprendices", con=conn, if_exists="append", index=False)
+        conn.close()
+
+    return redirect("aprendiz")
+    #return redirect("/")
+
+
+@app.route('/loadAprendicesMany', methods=['GET', 'POST'])
+def loadAprendicesMany():
+
     frames=[]
     xls_files = []
     allApren = []

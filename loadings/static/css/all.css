@@ -1,10 +1,16 @@
 /* common */
 
 body {
-    color: aliceblue;
-    background: #7d70ee;
-    background: -webkit-linear-gradient(to right, #4141a1, #372e9e, #7d70ee);
-    background: linear-gradient(to right, #4141a1, #372e9e, #7d70ee);
+    color: black;
+
+}
+.backs{
+    border-radius: 2rem;
+    padding-top: 3rem;
+    color: white;
+    background: #F76300;
+    background: -webkit-linear-gradient(to right, #f58b44, #F76300, #c44f01);
+    background: linear-gradient(to left, #f58b44, #F76300, #c44f01);
 }
 .borde {
     border: solid 1px black !important;
@@ -115,7 +121,7 @@ body {
 }
 
 .imgpage{
-    width: 150px;
+    width: 100%;
     height: auto;
     vertical-align: middle;
     border-style: none;
