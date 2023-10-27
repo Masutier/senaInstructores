@@ -1,6 +1,5 @@
 venv
 venv/*
-static/docs/instructores.json
 
 instructors/loadings/venv
 instructors/loadings/venv/*
@@ -9,3 +8,9 @@ instructors/testings/venv/*
 
 instructors/loadings/__pycache__
 instructors/testings/__pycache__
+
+fichas_evaluacion_instructores
+fichas_evaluacion_instructores/*
+
+plantillas
+
