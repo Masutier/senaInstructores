@@ -1,12 +1,11 @@
 import os
 import csv, json
 import pandas as pd
+import sqlite3 as sql3
 from datetime import datetime, date
 from flask import Flask, flash, render_template as render, redirect, url_for, request, jsonify
-import sqlite3 as sql3
-from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, RadioField, SubmitField
-from wtforms.validators import InputRequired, Length
+from forms import *
+from dbsUtils import cursorExeOne, cursorExeAll
 
 with open("/home/gabriel/prog/json_config/instructores.json") as config_file:
     sec_config = json.load(config_file)
@@ -23,39 +22,9 @@ Aprendice_destiny_path = "../fichas_evaluacion_instructores/laprend/"
 Sqlite_instructor_destiny_path = "../fichas_evaluacion_instructores/linstr/instructor.db"
 # Folder to save csvs instructor
 instructor_destiny_path = "../fichas_evaluacion_instructores/linstr/"
+
 # Folder to testing instructors sqlite3
 Sqlite_testing_destiny_path = "../fichas_evaluacion_instructores/testing.db"
-
-
-class AprendizInfoForm(FlaskForm):
-    ficha = StringField('Ficha', validators=[InputRequired(), Length(min=7, max=7)])
-    name = StringField('Nombre', validators=[InputRequired(), Length(min=2, max=100)])
-    lastname = StringField('Apellidos', validators=[InputRequired(), Length(min=5, max=100)])
-    tipoDoc = StringField('Tipo Documento', validators=[InputRequired(), Length(min=1, max=3)])
-    numdoc = IntegerField('Numero de Documento', validators=[InputRequired()])
-
-
-class AprendizEInstructor(FlaskForm):
-    aprendizId = IntegerField()
-    instructorId = IntegerField()
-
-
-class preguntasForm(FlaskForm):
-    ficha = StringField('Ficha', validators=[InputRequired(), Length(min=7, max=7)])
-    aprendizNumDoc = IntegerField('Numero de Documento', validators=[InputRequired()])
-    no_identificacion_instructor = IntegerField('Numero de Documento', validators=[InputRequired()])
-    p01 = RadioField('P01', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
-    p02 = RadioField('P02', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
-    p03 = RadioField('P03', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
-    p04 = RadioField('P04', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
-    p05 = RadioField('P05', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
-    p06 = RadioField('P06', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
-    p07 = RadioField('P07', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
-    p08 = RadioField('P08', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
-    p09 = RadioField('P09', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
-    p10 = RadioField('P10', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
-    p11 = RadioField('P11', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
-    p12 = RadioField('P12', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -72,7 +41,6 @@ def questionario():
     allInst = []
     instructoresFaltan = []
 
-
     # Datos del Aprendiz y numero de ficha
     ficha = request.form['ficha']
     name = request.form['name']
@@ -85,18 +53,12 @@ def questionario():
 
     # Buscar el aprendiz en database para verificacion
     sqlQuery = f"""SELECT * FROM aprendices WHERE numero_de_documento = ? """
-    conn1 = sql3.connect(Sqlite_aprendiz_destiny_path)
-    cursor = conn1.cursor()
-    aprend = cursor.execute(sqlQuery, (numdoc,)).fetchone()
-    conn1.close()
+    aprend = cursorExeOne(Sqlite_aprendiz_destiny_path, sqlQuery, numdoc)
 
     if aprend:
         # Buscar lista de Instructores que dictan en la ficha
         sqlQuery = f"""SELECT * FROM instructores WHERE ficha = ? """
-        conn2 = sql3.connect(Sqlite_instructor_destiny_path)
-        cursor = conn2.cursor()
-        instructores = cursor.execute(sqlQuery, (ficha,)).fetchall()
-        conn2.close()
+        instructores = cursorExeAll(Sqlite_instructor_destiny_path, sqlQuery, ficha)
 
         if instructores:
             for instructor in instructores:
@@ -105,10 +67,7 @@ def questionario():
 
             # Buscar si el instructor ya fue calificado por el aprendiz
             sqlQuery = f"""SELECT * FROM testing WHERE aprendiz = ? """
-            conn3 = sql3.connect(Sqlite_testing_destiny_path)
-            cursor = conn3.cursor()
-            tested = cursor.execute(sqlQuery, (aprend[1],)).fetchall()
-            conn3.close()
+            tested = cursorExeAll(Sqlite_testing_destiny_path, sqlQuery, aprend[1])
 
             for i in ListaInstructores:
                 for j in tested:
@@ -140,17 +99,11 @@ def testing():
 
         # Buscar el aprendiz en database para verificacion
         sqlQuery = f"""SELECT * FROM aprendices WHERE numero_de_documento = ? """
-        conn = sql3.connect(Sqlite_aprendiz_destiny_path)
-        cursor = conn.cursor()
-        aprendiz = cursor.execute(sqlQuery, (aprendizId,)).fetchone()
-        conn.close()
+        aprendiz = cursorExeOne(Sqlite_aprendiz_destiny_path, sqlQuery, aprendizId)
 
         # Buscar lista de Instructores que dictan en la ficha
         sqlQuery = f"""SELECT * FROM instructores WHERE no_identificacion_instructor = ? """
-        conn = sql3.connect(Sqlite_instructor_destiny_path)
-        cursor = conn.cursor()
-        instructor = cursor.execute(sqlQuery, (instructorId,)).fetchone()
-        conn.close()
+        instructor = cursorExeOne(Sqlite_instructor_destiny_path, sqlQuery, instructorId)
 
         return render("questionario.html", title="Questionario", form=form, aprendiz=aprendiz, instructor=instructor)
     else:
@@ -175,8 +128,6 @@ def saveTest():
     p10 = request.values.get('p10')
     p11 = request.values.get('p11')
     p12 = request.values.get('p12')
-
-    print(p01, "--", p02)
 
     if not p01 or not p05 or not p12:
         flash("Te faltaron algunas preguntas por responder, intentalo otra vez")

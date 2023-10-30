@@ -5,9 +5,9 @@ from datetime import datetime, date
 from utils import semestre
 
 # Directory for Aprentices
-origen_path = "/home/gabriel/Downloads/fichas evaluacion instructores/instructores/"
+origen_path = "~/Downloads"
 # Folder to save csvs apprentice
-instructor_destiny_path = "/home/gabriel/Downloads/fichas_evaluacion_instructores/linstr/"
+instructor_destiny_path = "../fichas_evaluacion_instructores/linstr/"
 
 
 # crear directorio si no existe

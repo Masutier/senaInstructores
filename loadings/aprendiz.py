@@ -5,9 +5,9 @@ from utils import semestre
 
 
 # Directory for Aprentices
-origen_path = "/home/gabriel/Downloads/fichas evaluacion instructores/aprendices/"
+origen_path = "~/Downloads"
 # Folder to save csvs apprentice
-Aprendice_destiny_path = "/home/gabriel/Downloads/fichas_evaluacion_instructores/laprend/"
+Aprendice_destiny_path = "../fichas_evaluacion_instructores/laprend/"
 
 
 # crear directorio si no existe

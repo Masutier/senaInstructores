@@ -7,7 +7,7 @@ import sqlite3 as sql3
 from aprendiz import *
 from instructor import *
 
-with open("/home/gabriel/prog/json_config/instructores.json") as config_file:
+with open("~/prog/json_config/instructores.json") as config_file:
     sec_config = json.load(config_file)
 
 app = Flask(__name__, static_url_path='/static')
@@ -16,16 +16,16 @@ now = datetime.now()
 year = now.strftime("%Y")
 
 # Directory for xls
-origen_path = "/home/gabriel/Downloads/fichas evaluacion instructores/aprendices/"
+origen_path = "~/Downloads"
 # Folder to aprendiz sqlite3
-Sqlite_aprendiz_destiny_path = "/home/gabriel/Downloads/fichas_evaluacion_instructores/laprend/aprendiz.db"
+Sqlite_aprendiz_destiny_path = "../fichas_evaluacion_instructores/laprend/aprendiz.db"
 # Folder to save csvs apprentice
-Aprendice_destiny_path = "/home/gabriel/Downloads/fichas_evaluacion_instructores/laprend/"
+Aprendice_destiny_path = "../fichas_evaluacion_instructores/laprend/"
 
 # Folder to instructor sqlite3
-Sqlite_instructor_destiny_path = "/home/gabriel/Downloads/fichas_evaluacion_instructores/linstr/instructor.db"
+Sqlite_instructor_destiny_path = "../fichas_evaluacion_instructores/linstr/instructor.db"
 # Folder to save csvs instructor
-instructor_destiny_path = "/home/gabriel/Downloads/fichas_evaluacion_instructores/linstr/"
+instructor_destiny_path = "../fichas_evaluacion_instructores/linstr/"
 
 
 def semestre():

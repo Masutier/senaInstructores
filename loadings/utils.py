@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime, date
 
-with open("/home/gabriel/prog/json_config/instructores.json") as config_file:
+with open("~/prog/json_config/instructores.json") as config_file:
     sec_config = json.load(config_file)
 
 now = datetime.now()
