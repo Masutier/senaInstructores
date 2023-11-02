@@ -3,9 +3,6 @@ import numpy as np
 import pandas as pd
 from utils import semestre
 
-
-# Directory for Aprentices
-origen_path = "~/Downloads"
 # Folder to save csvs apprentice
 Aprendice_destiny_path = "../fichas_evaluacion_instructores/laprend/"
 

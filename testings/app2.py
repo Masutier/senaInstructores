@@ -52,13 +52,19 @@ def questionario():
         aprendix.append(i)
 
     # Buscar el aprendiz en database para verificacion
-    sqlQuery = f"""SELECT * FROM aprendices WHERE numero_de_documento = ? """
-    aprend = cursorExeOne(Sqlite_aprendiz_destiny_path, sqlQuery, numdoc)
+    sqlQuery = f"""SELECT * FROM aprendices WHERE NUMERO_DOCUMENTO = ? """
+    conn2 = sql3.connect(Sqlite_aprendiz_destiny_path)
+    cursor = conn2.cursor()
+    aprend = cursor.execute(sqlQuery, (numdoc,)).fetchone()
+    conn2.close()
 
     if aprend:
         # Buscar lista de Instructores que dictan en la ficha
         sqlQuery = f"""SELECT * FROM instructores WHERE ficha = ? """
-        instructores = cursorExeAll(Sqlite_instructor_destiny_path, sqlQuery, ficha)
+        conn2 = sql3.connect(Sqlite_instructor_destiny_path)
+        cursor = conn2.cursor()
+        instructores = cursor.execute(sqlQuery, (ficha,)).fetchall()
+        conn2.close()
 
         if instructores:
             for instructor in instructores:
@@ -67,7 +73,10 @@ def questionario():
 
             # Buscar si el instructor ya fue calificado por el aprendiz
             sqlQuery = f"""SELECT * FROM testing WHERE aprendiz = ? """
-            tested = cursorExeAll(Sqlite_testing_destiny_path, sqlQuery, aprend[1])
+            conn2 = sql3.connect(Sqlite_testing_destiny_path)
+            cursor = conn2.cursor()
+            databack = cursor.execute(sqlQuery, (aprend[2],)).fetchall()
+            conn2.close()
 
             for i in ListaInstructores:
                 for j in tested:
@@ -98,12 +107,18 @@ def testing():
         form = preguntasForm()
 
         # Buscar el aprendiz en database para verificacion
-        sqlQuery = f"""SELECT * FROM aprendices WHERE numero_de_documento = ? """
-        aprendiz = cursorExeOne(Sqlite_aprendiz_destiny_path, sqlQuery, aprendizId)
+        sqlQuery = f"""SELECT * FROM aprendices WHERE NUMERO_DOCUMENTO = ? """
+        conn2 = sql3.connect(Sqlite_aprendiz_destiny_path)
+        cursor = conn2.cursor()
+        aprendiz = cursor.execute(sqlQuery, (aprendizId,)).fetchone()
+        conn2.close()
 
         # Buscar lista de Instructores que dictan en la ficha
         sqlQuery = f"""SELECT * FROM instructores WHERE no_identificacion_instructor = ? """
-        instructor = cursorExeOne(Sqlite_instructor_destiny_path, sqlQuery, instructorId)
+        conn2 = sql3.connect(Sqlite_instructor_destiny_path)
+        cursor = conn2.cursor()
+        instructor = cursor.execute(sqlQuery, (instructorId,)).fetchone()
+        conn2.close()
 
         return render("questionario.html", title="Questionario", form=form, aprendiz=aprendiz, instructor=instructor)
     else:

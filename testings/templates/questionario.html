@@ -8,18 +8,20 @@
         <img src="/static/img/CGMLTI.png" class="imgpage" alt="XLS" />
     </div>
 
-    <div class="col-12 mx-auto mt-5">
+    <div class="col-11 mx-auto mt-5">
+        <div class="col-11 mx-auto c">
+            <h2>Ficha:  {{aprendiz[0]}}</h2>
+        </div>
         <div class="row">
-            <div class="col-7 mx-auto ">
+            <div class="col-6 mx-auto  mt-3">
                 <div class="col-11 mx-auto c">
-                    <h3>Ficha:  {{aprendiz[8]}}</h3>
                     <h3>Aprendiz</h3>
                 </div>
                 <div class="col-9 mx-auto mb-4 c">
-                    <h5>{{aprendiz[2]}} {{aprendiz[3]}} </h5>
+                    <h2>{{aprendiz[3]}} {{aprendiz[4]}} {{aprendiz[5]}} </h2>
                 </div>
             </div>
-            <div class="col-5 mx-auto mt-3">
+            <div class="col-6 mx-auto mt-3">
                 <div class="col-11 mx-auto c">
                     <h3>Instructor</h3>
                 </div>
@@ -35,11 +37,12 @@
 
                 <div class="col-12 mx-auto mb-5 c">
                     <h1>Questionario Evaluación de Instructores</h1>
+                    <h6>Tenga en cuenta que "0" es muy deficiente y "5" es muy eficiente</h6>
                 </div>
 
-                <input class="form-check-input" type="hidden" name="ficha" id="ficha" value="{{aprendiz[8]}}">
+                <input class="form-check-input" type="hidden" name="ficha" id="ficha" value="{{aprendiz[0]}}">
 
-                <input class="form-check-input" type="hidden" name="aprendizid" id="aprendizid" value="{{aprendiz[1]}}">
+                <input class="form-check-input" type="hidden" name="aprendizid" id="aprendizid" value="{{aprendiz[2]}}">
                 <input class="form-check-input" type="hidden" name="instructorid" id="instructorid" value="{{instructor[9]}}">
 
                 <div class="col-lg-10 col-sm-11 mt-3 mb-5 mx-auto">

@@ -7,7 +7,8 @@ import sqlite3 as sql3
 from aprendiz import *
 from instructor import *
 
-with open("~/prog/json_config/instructores.json") as config_file:
+# evaluacion
+with open("/home/gabriel/prog/json_config/instructores.json") as config_file:
     sec_config = json.load(config_file)
 
 app = Flask(__name__, static_url_path='/static')
@@ -15,8 +16,6 @@ app.secret_key = sec_config['SECRET_KEY']
 now = datetime.now()
 year = now.strftime("%Y")
 
-# Directory for xls
-origen_path = "~/Downloads"
 # Folder to aprendiz sqlite3
 Sqlite_aprendiz_destiny_path = "../fichas_evaluacion_instructores/laprend/aprendiz.db"
 # Folder to save csvs apprentice
@@ -67,14 +66,14 @@ def aprendiz():
 @app.route('/instructor', methods=['GET', 'POST'])
 def instructor():
     instructores = []
-    sqlQuery = f"""SELECT * FROM instructores ORDER BY nombre_del_instructor ASC"""
+    sqlQuery = f"""SELECT * FROM instructores ORDER BY NOMBRES ASC"""
 
     conn = sql3.connect(Sqlite_instructor_destiny_path)
     cursor = conn.cursor()
     rows = cursor.execute(sqlQuery).fetchall()
 
     for row in rows:
-        instruc = [row[7], row[8]]
+        instruc = [row[0], row[1]]
         if instruc not in instructores:
             instructores.append(instruc)
     
@@ -200,39 +199,27 @@ def loadInstructores():
     if request.method == "POST":
             # crear directorio si no existe
         endDir = crearInstructorFolder()
-            # Recibe xls file y separa nombre de la extension
-        fileinn = request.files.get("fileinn")
+            # Recibe file y separa nombre de la extension
+        fileinn = request.files["instructorFileIn"]
         namefile = fileinn.filename
-            # Extrae los nombres de las pestanas
-        all_sheets = pd.read_excel(fileinn, sheet_name=None)
-        sheets = all_sheets.keys()
+        filenamex = namefile.split('.')
 
-        # Manipula cada csv
-        for sheet in sheets:
-            if sheet != 'LOGÍSTICA' and sheet != 'DATOS':
-                dataframe = all_sheets[sheet]
-                    # Limpia nombre de las pestanas
-                tbl_name = cleanSheets(sheet)
-                    # Limpia los titulos de columnas
-                dataframe.columns = cleanColNamesAll(dataframe, tbl_name)
-                    # Limpia la data
-                dataframe = cleanData(dataframe)
-                    # Save processed sheets into one master dataframe
-                allInstr.append(dataframe)
+        if filenamex[1] == "csv":
+            df = pd.read_csv(fileinn, index_col=False)
+        elif filenamex[1] == "xls":
+            df = pd.read_excel(fileinn)
+        elif filenamex[1] == "xlsx":
+            df = pd.read_excel(fileinn)
+        elif filenamex[1] == "ods":
+            df = pd.read_excel(fileinn, engine="odf")
+        else:
+            flash("El archivo no es valido, revise que sea .csv, .xls, .xlsx o .ods")
+            return redirect("/")
 
-            elif sheet == 'LOGÍSTICA':
-                dataframe = all_sheets[sheet]
-                    # Limpia nombre de las pestanas
-                tbl_name = cleanSheets(sheet)
-                    # Limpia los titulos de columnas
-                dataframe.columns = cleanColNamesOne(dataframe, tbl_name)
-                    # Limpia la data
-                dataframe = cleanData(dataframe)
-                    # Save processed sheets into one master dataframe
-                allInstr.append(dataframe)
-
-            # Join all files in one dataframe
-        df = pd.concat(allInstr, axis=0)
+            # Limpia los titulos de columnas
+        df.columns = cleanColNamesAll(df)
+            # Limpia la data
+        df = cleanData(df)
 
             # save to csv
         df.to_csv(endDir + "allInstructores.csv", index=True)

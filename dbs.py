@@ -6,10 +6,10 @@ with open("/home/gabriel/prog/json_config/instructores.json") as config_file:
 
 
 # Folder to aprendiz sqlite3
-Sqlite_aprendiz_destiny_path = "/home/gabriel/Downloads/fichas_evaluacion_instructores/laprend/aprendiz.db"
+Sqlite_aprendiz_destiny_path = "../fichas_evaluacion_instructores/laprend/aprendiz.db"
 
 # Folder to instructor sqlite3
-Sqlite_instructor_destiny_path = "/home/gabriel/Downloads/fichas_evaluacion_instructores/linstr/instructor.db"
+Sqlite_instructor_destiny_path = "../fichas_evaluacion_instructores/linstr/instructor.db"
 
 
 # Create Aprendiz db

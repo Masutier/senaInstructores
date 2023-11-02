@@ -42,24 +42,16 @@
                 <thead>
                 <tr>
                     <th scope="col">Ficha</th>
-                    <th scope="col">Tipo de Formacion</th>
-                    <th scope="col">fecha_inicio_formacion</th>
-                    <th scope="col">fecha_finalizacion</th>
                     <th scope="col">nombre_del_instructor</th>
                     <th scope="col">apellidos_del_instructor</th>
-                    <th scope="col">coordinacion</th>
                 </tr>
                 </thead>
                 <tbody>
                     {% for row in rows %}
                         <tr>
-                            <td>{{row[2]}}</td>
                             <td>{{row[3]}}</td>
-                            <td>{{row[5]}}</td>
-                            <td>{{row[6]}}</td>
-                            <td>{{row[7]}}</td>
-                            <td>{{row[8]}}</td>
-                            <td>{{row[11]}}</td>
+                            <td>{{row[1]}}</td>
+                            <td>{{row[2]}}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
