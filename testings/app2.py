@@ -75,7 +75,7 @@ def questionario():
             sqlQuery = f"""SELECT * FROM testing WHERE aprendiz = ? """
             conn2 = sql3.connect(Sqlite_testing_destiny_path)
             cursor = conn2.cursor()
-            databack = cursor.execute(sqlQuery, (aprend[2],)).fetchall()
+            tested = cursor.execute(sqlQuery, (aprend[2],)).fetchall()
             conn2.close()
 
             for i in ListaInstructores:
