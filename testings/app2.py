@@ -7,6 +7,7 @@ from flask import Flask, flash, render_template as render, redirect, url_for, re
 from forms import *
 from dbsUtils import cursorExeOne, cursorExeAll
 
+# evaluacion
 with open("/home/gabriel/prog/json_config/instructores.json") as config_file:
     sec_config = json.load(config_file)
 
@@ -80,7 +81,7 @@ def questionario():
 
             for i in ListaInstructores:
                 for j in tested:
-                    if str(i[9]) == j[2]:
+                    if str(i[3]) == j[2]:
                         allInst.append(i)
 
             for l in ListaInstructores:
@@ -114,7 +115,7 @@ def testing():
         conn2.close()
 
         # Buscar lista de Instructores que dictan en la ficha
-        sqlQuery = f"""SELECT * FROM instructores WHERE no_identificacion_instructor = ? """
+        sqlQuery = f"""SELECT * FROM instructores WHERE NUMERO_DE_DOCUMENTO = ? """
         conn2 = sql3.connect(Sqlite_instructor_destiny_path)
         cursor = conn2.cursor()
         instructor = cursor.execute(sqlQuery, (instructorId,)).fetchone()
