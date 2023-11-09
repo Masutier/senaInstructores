@@ -109,19 +109,8 @@ def loadAprendicesOne():
             return redirect("/")
 
             # Remove unwanted rows
-        df.drop(df.index[:3], inplace=True)
-        df.reset_index(drop=True, inplace=True)
-        df.rename(columns=df.iloc[0], inplace = True)
-        df.drop(df.index[0], inplace = True)
 
             # Remove unwanted columns
-        df.drop(df.iloc[:, 16:], inplace=True, axis=1)
-        df.drop(df.iloc[:, 5:10], inplace=True, axis=1)
-        df.drop(df.iloc[:, 0:4], inplace=True, axis=1)
-        df.drop(df.index[(df["ESTADO_APRENDIZ"] == "Aplazado")],axis=0,inplace=True)
-        df.drop(df.index[(df["ESTADO_APRENDIZ"] == "Cancelado")],axis=0,inplace=True)
-        df.drop(df.index[(df["ESTADO_APRENDIZ"] == "Certificado")],axis=0,inplace=True)
-        df.drop(df.index[(df["ESTADO_APRENDIZ"] == "Retiro voluntario")],axis=0,inplace=True)
 
             # save to csv
         df.to_csv('../fichas_evaluacion_instructores/laprend/II_SEM_2023/aprendices.csv', index = False)
@@ -220,7 +209,6 @@ def loadInstructores():
         df.columns = cleanColNamesAll(df)
             # Limpia la data
         df = cleanData(df)
-
             # save to csv
         df.to_csv(endDir + "allInstructores.csv", index=True)
 
