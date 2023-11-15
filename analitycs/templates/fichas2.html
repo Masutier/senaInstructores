@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+    
+<div class="col-12 mx-auto ">
+    <div class="col-11 mx-auto">
+        <img src="/static/img/CGMLTI.png" class="imgpage" alt="XLS" />
+    </div>
+
+    <div class="col-9 mx-auto">
+        <div class="col-11 mx-auto mt-5 c">
+            <h1>Información de la Ficha {{ ficha2 }}</h1>
+        </div>
+    </div>
+</div>
+
+<div class="col-12 mx-auto mt-5 mb-5">
+    <div class="col-11 mx-auto backs">
+
+        <div class="row">
+
+            <div class="col-lg-5 mx-auto p-2">
+                <h3>Aprendices en la Ficha</h3>
+                <table class="table table-dark table-striped">
+                    <tbody>
+                        {% for fichaA in fichaAprendiz %}
+                            <tr>
+                                <td>{{ fichaA[3] }}</td>
+                                <td>{{ fichaA[4] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-lg-5 mx-auto p-2">
+                <h3>Instructores de la Ficha</h3>
+                <table class="table table-dark table-striped">
+                    <tbody>
+                        {% for fichaI in fichasInstructor %}
+                            <tr>
+                                <td>{{ fichaI[1] }}</td>
+                                <td>{{ fichaI[2] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

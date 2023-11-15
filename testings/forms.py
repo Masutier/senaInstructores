@@ -33,3 +33,6 @@ class preguntasForm(FlaskForm):
     p11 = RadioField('P11', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
     p12 = RadioField('P12', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
 
+
+class FichaForm(FlaskForm):
+    ficha = StringField('Ficha', validators=[InputRequired(), Length(min=7, max=7)])

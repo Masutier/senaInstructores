@@ -30,9 +30,34 @@ Sqlite_testing_destiny_path = "../fichas_evaluacion_instructores/testing.db"
 
 @app.route('/', methods=['GET', 'POST'])
 def home2():
+    ficap = []
+    ficin = []
     form = AprendizInfoForm()
-    
-    return render("home2.html", title="Instructores", form=form)
+    form2 = FichaForm()
+
+
+    # Buscar fichas aprendices
+    sqlQuery = f"""SELECT ficha FROM aprendices """
+    conn1 = sql3.connect(Sqlite_aprendiz_destiny_path)
+    cursor = conn1.cursor()
+    fichasApr = cursor.execute(sqlQuery).fetchall()
+    conn1.close()
+
+    # Buscar fichas instructores
+    sqlQuery = f"""SELECT fichas FROM instructores """
+    conn2 = sql3.connect(Sqlite_instructor_destiny_path)
+    cursor = conn2.cursor()
+    fichasIns = cursor.execute(sqlQuery).fetchall()
+    conn2.close()
+
+    for fichaA in fichasApr:
+        if fichaA not in ficap:
+            ficap.append(fichaA)
+    for fichaI in fichasIns:
+        if fichaI not in ficin:
+            ficin.append(fichaI)
+
+    return render("home2.html", title="Instructores", form=form, form2=form2, ficap=ficap, ficin=ficin)
 
 
 @app.route('/questionario', methods=['GET', 'POST'])
@@ -159,7 +184,27 @@ def saveTest():
         return redirect(url_for("home2"))
 
 
+@app.route('/ficha2', methods=['GET', 'POST'])
+def ficha2():
+    ficha2 = request.values.get('ficha')
+
+    # Buscar fichas aprendices
+    sqlQuery = f"""SELECT * FROM aprendices WHERE FICHA = ? """
+    conn1 = sql3.connect(Sqlite_aprendiz_destiny_path)
+    cursor = conn1.cursor()
+    fichasApr = cursor.execute(sqlQuery, (ficha2,)).fetchall()
+    conn1.close()
+
+    # Buscar fichas instructores
+    sqlQuery = f"""SELECT * FROM instructores WHERE FICHAS = ? """
+    conn2 = sql3.connect(Sqlite_instructor_destiny_path)
+    cursor = conn2.cursor()
+    fichasIns = cursor.execute(sqlQuery, (ficha2,)).fetchall()
+    conn2.close()
+
+    return render("fichas2.html", title="fichas", fichasApr=fichasApr, fichasIns=fichasIns)
+
+
 if __name__ == '__main__':
     #app.run(debug=True, host="172.16.170.60", port=8080)
     app.run(debug=True, host="localhost", port=5050)
-
