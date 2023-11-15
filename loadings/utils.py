@@ -23,9 +23,9 @@ def semestre():
 
 # Clean file name
 def clean_tbl_name(csvf):
-    CleanName = csvf.lower().replace(" ","_").replace("-","_").replace("$","").replace("?","").replace("%","") \
-        .replace("Á","a").replace("É","e").replace("Í","i").replace("Ó","o").replace("Ú","u").replace("Ñ","n") \
-        .replace("á","a").replace("é","e").replace("í","i").replace("ó","o").replace("ú","u").replace("ñ","n") \
+    CleanName = csvf.upper().replace(" ","_").replace("-","_").replace("$","").replace("?","").replace("%","") \
+        .replace("Á","A").replace("É","E").replace("Í","I").replace("Ó","O").replace("Ú","U").replace("Ñ","N") \
+        .replace("á","A").replace("é","E").replace("í","I").replace("ó","O").replace("ú","U").replace("ñ","N") \
         .replace("@","").replace("#","").replace(r"/","_").replace("\\","_").replace(r"(","").replace(")","")
     tbl_name = '{0}'.format(CleanName.split('.')[0])
 

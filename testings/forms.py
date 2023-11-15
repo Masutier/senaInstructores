@@ -4,7 +4,7 @@ from wtforms import StringField, IntegerField, RadioField, SubmitField
 from wtforms.validators import InputRequired, Length
 
 class AprendizInfoForm(FlaskForm):
-    ficha = StringField('Ficha', validators=[InputRequired(), Length(min=7, max=7)])
+    ficha = StringField('Ficha', validators=[InputRequired(), Length(min=5, max=8)])
     name = StringField('Nombre', validators=[InputRequired(), Length(min=2, max=100)])
     lastname = StringField('Apellidos', validators=[InputRequired(), Length(min=5, max=100)])
     tipoDoc = StringField('Tipo Documento', validators=[InputRequired(), Length(min=1, max=3)])
@@ -17,7 +17,7 @@ class AprendizEInstructor(FlaskForm):
 
 
 class preguntasForm(FlaskForm):
-    ficha = StringField('Ficha', validators=[InputRequired(), Length(min=7, max=7)])
+    ficha = StringField('Ficha', validators=[InputRequired(), Length(min=5, max=8)])
     aprendizNumDoc = IntegerField('Numero de Documento', validators=[InputRequired()])
     no_identificacion_instructor = IntegerField('Numero de Documento', validators=[InputRequired()])
     p01 = RadioField('P01', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
@@ -33,6 +33,3 @@ class preguntasForm(FlaskForm):
     p11 = RadioField('P11', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
     p12 = RadioField('P12', choices=['0', '1', '2', '3', '4', '5'], validators=[InputRequired()])
 
-
-class FichaForm(FlaskForm):
-    ficha = StringField('Ficha', validators=[InputRequired(), Length(min=7, max=7)])

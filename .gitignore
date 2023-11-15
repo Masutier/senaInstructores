@@ -5,13 +5,14 @@ instructors/loadings/venv
 instructors/loadings/venv/*
 instructors/testings/venv
 instructors/testings/venv/*
+instructors/analitycs/venv
+instructors/analitycs/venv/*
 
 instructors/loadings/__pycache__
 instructors/testings/__pycache__
+instructors/analitycs/__pycache__
 
 fichas_evaluacion_instructores
 fichas_evaluacion_instructores/*
 
 plantillas
-analitycs
-

@@ -32,9 +32,9 @@ Sqlite_testing_destiny_path = "../fichas_evaluacion_instructores/testing.db"
 def home2():
     ficap = []
     ficin = []
+    ficapqty = 0
+    ficinqty = 0
     form = AprendizInfoForm()
-    form2 = FichaForm()
-
 
     # Buscar fichas aprendices
     sqlQuery = f"""SELECT ficha FROM aprendices """
@@ -53,11 +53,14 @@ def home2():
     for fichaA in fichasApr:
         if fichaA not in ficap:
             ficap.append(fichaA)
+            ficapqty += 1
+
     for fichaI in fichasIns:
         if fichaI not in ficin:
             ficin.append(fichaI)
+            ficinqty += 1
 
-    return render("home2.html", title="Instructores", form=form, form2=form2, ficap=ficap, ficin=ficin)
+    return render("home2.html", title="Instructores", form=form, ficap=ficap, ficin=ficin, ficapqty=ficapqty, ficinqty=ficinqty)
 
 
 @app.route('/questionario', methods=['GET', 'POST'])
@@ -182,27 +185,6 @@ def saveTest():
 
         flash("El cuestionario se gravo satisfactoriamente!")
         return redirect(url_for("home2"))
-
-
-@app.route('/ficha2', methods=['GET', 'POST'])
-def ficha2():
-    ficha2 = request.values.get('ficha')
-
-    # Buscar fichas aprendices
-    sqlQuery = f"""SELECT * FROM aprendices WHERE FICHA = ? """
-    conn1 = sql3.connect(Sqlite_aprendiz_destiny_path)
-    cursor = conn1.cursor()
-    fichasApr = cursor.execute(sqlQuery, (ficha2,)).fetchall()
-    conn1.close()
-
-    # Buscar fichas instructores
-    sqlQuery = f"""SELECT * FROM instructores WHERE FICHAS = ? """
-    conn2 = sql3.connect(Sqlite_instructor_destiny_path)
-    cursor = conn2.cursor()
-    fichasIns = cursor.execute(sqlQuery, (ficha2,)).fetchall()
-    conn2.close()
-
-    return render("fichas2.html", title="fichas", fichasApr=fichasApr, fichasIns=fichasIns)
 
 
 if __name__ == '__main__':

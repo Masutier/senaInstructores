@@ -113,40 +113,6 @@
         </div>
     </div>
 
-
-    <div class="col-5 mx-auto mt-4 p-5 backs">
-        <form action="ficha2" method="POST">
-            <h3>Buscar Ficha</h3>
-            {{ form.csrf_token }}
-            <div class="form-group">
-                {{ form2.ficha.label }}
-                {{ form2.ficha(class_="form-control", size=32) }}
-            </div>
-
-            <div class="col-lg-7 col-sm-10 mx-auto d-grid gap-2 mt-5">
-                <input class="btn btn-dark" type="submit" value="Buscar">
-            </div>
-
-        </form>
-    </div>
-
-    <div class="row">
-
-        <div class="col-lg-5 mx-auto p-2">
-            Fichas de Aprendices
-            {% for fichaA in ficap %}
-                {{ fichaA }}
-            {% endfor %}
-        </div>
-
-        <div class="col-lg-5 mx-auto p-2">
-            Fichas de Instructores
-            {% for fichaI in ficin %}
-                {{ fichaI }}
-            {% endfor %}
-        </div>
-
-    </div>
 </div>
 
 
