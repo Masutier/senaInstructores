@@ -66,7 +66,7 @@ def aprendiz():
 @app.route('/instructor', methods=['GET', 'POST'])
 def instructor():
     instructores = []
-    sqlQuery = f"""SELECT * FROM instructores ORDER BY NOMBRES ASC"""
+    sqlQuery = f"""SELECT * FROM instructores ORDER BY NOMBRE ASC"""
 
     conn = sql3.connect(Sqlite_instructor_destiny_path)
     cursor = conn.cursor()
@@ -111,6 +111,9 @@ def loadAprendicesOne():
             # Remove unwanted rows
 
             # Remove unwanted columns
+
+            # Clean Data
+        df = clean_data_aprendiz(df)
 
             # save to csv
         df.to_csv('../fichas_evaluacion_instructores/laprend/II_SEM_2023/aprendices.csv', index = False)
@@ -205,15 +208,12 @@ def loadInstructores():
             flash("El archivo no es valido, revise que sea .csv, .xls, .xlsx o .ods")
             return redirect("/")
 
-            # Limpia los titulos de columnas
-        df.columns = cleanColNamesAll(df)
             # Limpia la data
-        df = cleanData(df)
+        df = clean_data_instructor(df)
+
             # save to csv
         df.to_csv(endDir + "allInstructores.csv", index=True)
 
-        df = pd.read_csv(endDir + "allInstructores.csv")
-        
             # DATABASE
         conn = sql3.connect(Sqlite_instructor_destiny_path)
         df.to_sql(name="instructores", con=conn, if_exists="append", index=False)

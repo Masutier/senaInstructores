@@ -21,20 +21,22 @@ def crearInstructorFolder():
 
 
     # Clean columns names
-def cleanColNamesAll(dataframe):
+def clean_data_instructor(dataframe):
     dataframe.columns = [x.upper().replace(" ","_").replace("-","_").replace("$","").replace("?","").replace("%","").replace(".","") \
         .replace("Á","A").replace("É","E").replace("Í","I").replace("Ó","O").replace("Ú","U").replace("Ñ","N") \
         .replace("á","A").replace("é","E").replace("í","I").replace("ó","O").replace("ú","U").replace("ñ","N") \
         .replace("@","").replace("#","").replace(r"/","").replace("\\","").replace(r"(","") \
         .replace(")","").replace(".","").replace("\n_anomesdia","").replace("\nanomesdia","") for x in dataframe.columns]
-    
-    return dataframe.columns
-
 
     # CLEAN DATA
-def cleanData(dataframe):
+
     dataframe['FICHA'] = dataframe['FICHA'].astype(str)
     dataframe['FICHA'] = [x.replace(".0","") for x in dataframe['FICHA']]
+
+    dataframe['PROGRAMA_DE_FORMACION'] = dataframe['PROGRAMA_DE_FORMACION'].fillna('ND')
+
+    dataframe['NUMERO_DE_DOCUMENTO'] = dataframe['NUMERO_DE_DOCUMENTO'].astype(str)
+    dataframe['NUMERO_DE_DOCUMENTO'] = dataframe['NUMERO_DE_DOCUMENTO'].fillna('ND')
 
     return dataframe
     
