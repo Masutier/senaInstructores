@@ -17,44 +17,46 @@
 
 <hr>
 
-<div class="col-12 mx-auto mt-5">
-    <div class="col-6 mx-auto">
-        <h2 class="c">Información General</h2>
-    </div>
+<div class="col-11 mx-auto mt-5 mb-5">
+    <div class="row">
+        <div class="col-6 mt-4 mx-auto">
+            <h2 class="c">Información General</h2>
 
-    <div class="col-7 mx-auto p-5 ">
-        <h3 class="c">Cantidad de Aprendices - {{ allApren }}</h3>
-        <h3 class="c">Cantidad de Instructores - {{ allInstr }}</h3>
-    </div>
-</div>
-
-<hr>
-
-<div class="col-5 mx-auto mt-4 p-5 backs">
-    <form action="ficha2" method="POST">
-        <h3>Buscar Ficha</h3>
-        {{ form.csrf_token }}
-        <div class="form-group">
-            {{ form.ficha.label }}
-            {{ form.ficha(class_="form-control", size=32) }}
+            <div class="col-12 mx-auto p-5 backs">
+                <h3 class="c">Cantidad de Aprendices - {{ allApren }}</h3>
+                <h3 class="c">Cantidad de Instructores - {{ allInstr }}</h3>
+            </div>
         </div>
 
-        <div class="col-lg-7 col-sm-10 mx-auto d-grid gap-2 mt-5">
-            <input class="btn btn-dark" type="submit" value="Buscar">
+        <div class="col-6 mx-auto">
+            <h3>Buscar Ficha</h3>
+
+            <div class="col-12 mx-auto p-5 backs">
+                <form action="ficha2" method="POST">
+                    
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        {{ form.ficha.label }}
+                        {{ form.ficha(class_="form-control", size=32) }}
+                    </div>
+
+                    <div class="col-lg-7 col-sm-10 mx-auto d-grid gap-2 mt-5">
+                        <input class="btn btn-dark" type="submit" value="Buscar">
+                    </div>
+                </form>
+            </div>
         </div>
 
-    </form>
+    </div>
 </div>
 
 <hr>
 
 <div class="col-11 mx-auto mt-5 mb-5">
     <div class="row">
-
         <div class="col-6 mx-auto">
-            <div class="col-6 mx-auto">
-                <h3 class="c">Fichas de Aprendices, Cantidad = {{ficapqty}}</h3>
-            </div>
+            <h3 class="c">Fichas de Aprendices</h3>
+            <h3 class="c">Cantidad = {{ficapqty}}</h3>
 
             <div class="col-12 mx-auto p-5 backs">
                 <div>
@@ -66,9 +68,8 @@
         </div>
 
         <div class="col-6 mx-auto">
-            <div class="col-6 mx-auto">
-                <h3 class="c">Fichas de Instructores, Cantidad = {{ficinqty}}</h3>
-            </div>
+            <h3 class="c">Fichas de Instructores</h3>
+            <h3 class="c">Cantidad = {{ficinqty}}</h3>
 
             <div class="col-12 mx-auto p-5 backs">
                 <div>
