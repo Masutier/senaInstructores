@@ -32,9 +32,7 @@ def clean_data_instructor(dataframe):
 
     dataframe['FICHA'] = dataframe['FICHA'].astype(str)
     dataframe['FICHA'] = [x.replace(".0","") for x in dataframe['FICHA']]
-
     dataframe['PROGRAMA_DE_FORMACION'] = dataframe['PROGRAMA_DE_FORMACION'].fillna('ND')
-
     dataframe['NUMERO_DE_DOCUMENTO'] = dataframe['NUMERO_DE_DOCUMENTO'].astype(str)
     dataframe['NUMERO_DE_DOCUMENTO'] = dataframe['NUMERO_DE_DOCUMENTO'].fillna('ND')
 

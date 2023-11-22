@@ -67,7 +67,6 @@ def aprendiz():
 def instructor():
     instructores = []
     sqlQuery = f"""SELECT * FROM instructores ORDER BY NOMBRE ASC"""
-
     conn = sql3.connect(Sqlite_instructor_destiny_path)
     cursor = conn.cursor()
     rows = cursor.execute(sqlQuery).fetchall()

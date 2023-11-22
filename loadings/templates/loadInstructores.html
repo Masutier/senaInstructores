@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+    
+<div class="col-12 mx-auto ">
+    <div class="col-11 mx-auto">
+        <img src="/static/img/CGMLTI.png" class="imgpage" alt="XLS" />
+    </div>
+
+    <div class="col-9 mx-auto">
+        <div class="col-11 mx-auto mt-5 c">
+            <h1>Aplicativo para valoración de los instructores por parte de los aprendices.</h1>
+        </div>
+        <div class="col-11 mx-auto mt-5">
+            <h1>Carga de .xls y .xlsx</h1>
+        </div>
+        <div class="col-11 mx-auto mt-3 mb-5">
+            <p>Aplicativo para inyectar a la base de datos los listados de instructores y aprendices.</p>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="col-12 mx-auto mt-5 mb-5">
+    <div class="row">
+        <div class="col-7 mx-auto mb-3">
+            <div class="col-12 mx-auto px-5 pt-5 pb-3 backs">
+                <h2>Subir el archivo de Aprendices</h2>
+                <form action="/loadAprendicesOne" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="aprendfileinn" class="form-label">Asegúrese que sea .csv, .xls o xlsx</label>
+                        <input class="form-control" type="file" name="aprendfileinn" required>
+                    </div>
+                    
+                    <div class="col-7 mx-auto">
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-dark mt-3" type="submit" name="submit">Procesar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <hr>
+
+            <div class="col-12 mx-auto px-5 pt-5 pb-3 backs">
+                <h2>Subir el archivo de Instructores</h2>
+                <form action="/reLoadInstructores" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="instructorFileIn" class="form-label">El Archivo</label>
+                        <input class="form-control" type="file" name="instructorFileIn" required>
+                    </div>
+                    
+                    <div class="col-7 mx-auto">
+                        <div class="d-grid gap-2">
+                            <button id="butSpin" class="btn btn-dark mt-3" type="submit" name="submit">Procesar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="col-11 mx-auto mb-3">
+                <h3>Formato de plantillas Para Diligenciar</h3>
+                <hr>
+                <p>Plantilla carga masiva de aprendices</p>
+                <a class="btn btn-success" href="static/docs/Plantilla_reporte_aprendices_Ficha 0000000.xlsx">Descarga Plantilla Reporte de Aprendices Ficha xxxxxxx.xlsx</a>
+            </div>
+            <hr>
+            <div class="col-11 mx-auto mb-3">
+                <p>Plantilla carga masiva de Instructores</p>
+                <a class="btn btn-success" href="static/docs/Plantilla_reporte_instructores.xlsx">Descarga Plantilla Reporte de Instructores.xlsx</a>
+            </div>
+            <hr>
+            <div class="col-11 mx-auto mb-3">
+                <h4>Carga de las Plantillas</h4>
+                <p>Asegúrese que el archivo sea .csv, .xls o .xlsx.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
