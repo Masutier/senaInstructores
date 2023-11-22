@@ -44,7 +44,7 @@ def home2():
     conn1.close()
 
     # Buscar fichas instructores
-    sqlQuery = f"""SELECT fichas FROM instructores """
+    sqlQuery = f"""SELECT FICHA FROM instructores """
     conn2 = sql3.connect(Sqlite_instructor_destiny_path)
     cursor = conn2.cursor()
     fichasIns = cursor.execute(sqlQuery).fetchall()
@@ -81,7 +81,7 @@ def questionario():
         aprendix.append(i)
 
     # Buscar el aprendiz en database para verificacion
-    sqlQuery = f"""SELECT * FROM aprendices WHERE NUMERO_DOCUMENTO = ? """
+    sqlQuery = f"""SELECT * FROM aprendices WHERE NUMERO_DE_DOCUMENTO = ? """
     conn2 = sql3.connect(Sqlite_aprendiz_destiny_path)
     cursor = conn2.cursor()
     aprend = cursor.execute(sqlQuery, (numdoc,)).fetchone()
@@ -89,7 +89,7 @@ def questionario():
 
     if aprend:
         # Buscar lista de Instructores que dictan en la ficha
-        sqlQuery = f"""SELECT * FROM instructores WHERE ficha = ? """
+        sqlQuery = f"""SELECT * FROM instructores WHERE FICHA = ? """
         conn2 = sql3.connect(Sqlite_instructor_destiny_path)
         cursor = conn2.cursor()
         instructores = cursor.execute(sqlQuery, (ficha,)).fetchall()
@@ -136,7 +136,7 @@ def testing():
         form = preguntasForm()
 
         # Buscar el aprendiz en database para verificacion
-        sqlQuery = f"""SELECT * FROM aprendices WHERE NUMERO_DOCUMENTO = ? """
+        sqlQuery = f"""SELECT * FROM aprendices WHERE NUMERO_DE_DOCUMENTO = ? """
         conn2 = sql3.connect(Sqlite_aprendiz_destiny_path)
         cursor = conn2.cursor()
         aprendiz = cursor.execute(sqlQuery, (aprendizId,)).fetchone()
