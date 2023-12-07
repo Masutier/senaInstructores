@@ -29,7 +29,6 @@ def clean_data_instructor(dataframe):
         .replace(")","").replace(".","").replace("\n_anomesdia","").replace("\nanomesdia","") for x in dataframe.columns]
 
     # CLEAN DATA
-
     dataframe['FICHA'] = dataframe['FICHA'].astype(str)
     dataframe['FICHA'] = [x.replace(".0","") for x in dataframe['FICHA']]
     dataframe['PROGRAMA_DE_FORMACION'] = dataframe['PROGRAMA_DE_FORMACION'].fillna('ND')

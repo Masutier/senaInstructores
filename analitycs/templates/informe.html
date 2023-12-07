@@ -10,7 +10,7 @@
 
     <div class="col-9 mx-auto">
         <div class="col-11 mx-auto mt-5 c">
-            <h1>Resultados de las pruebas</h1>
+            <h1>Resultados de las pruebas por instructor</h1>
         </div>
     </div>
 </div>
@@ -22,20 +22,7 @@
                 <thead>
                     <tr>
                         <th scope="col">FICHA</th>
-                        <th scope="col">ESTUDIANTE</th>
                         <th scope="col">INSTRUCTOR</th>
-                        <th scope="col">P01</th>
-                        <th scope="col">P02</th>
-                        <th scope="col">P03</th>
-                        <th scope="col">P04</th>
-                        <th scope="col">P05</th>
-                        <th scope="col">P06</th>
-                        <th scope="col">P07</th>
-                        <th scope="col">P08</th>
-                        <th scope="col">P09</th>
-                        <th scope="col">P10</th>
-                        <th scope="col">P11</th>
-                        <th scope="col">P12</th>
                         <th scope="col">RES</th>
                     </tr>
                 </thead>
@@ -43,20 +30,7 @@
                     {% for testing in testings %}
                         <tr>
                             <td>{{ testing[0][0] }}</td>
-                            <td>{{ testing[1][3] }} {{ testing[1][4] }}</td>
                             <td>{{ testing[2][4] }} {{ testing[2][5] }}</td>
-                            <td>{{ testing[0][3] }}</td>
-                            <td>{{ testing[0][4] }}</td>
-                            <td>{{ testing[0][5] }}</td>
-                            <td>{{ testing[0][6] }}</td>
-                            <td>{{ testing[0][7] }}</td>
-                            <td>{{ testing[0][8] }}</td>
-                            <td>{{ testing[0][9] }}</td>
-                            <td>{{ testing[0][10] }}</td>
-                            <td>{{ testing[0][11] }}</td>
-                            <td>{{ testing[0][12] }}</td>
-                            <td>{{ testing[0][13] }}</td>
-                            <td>{{ testing[0][14] }}</td>
                             <td>{{ testing[3]|round(2,) }}</td>
                         </tr>
                     {% endfor %}

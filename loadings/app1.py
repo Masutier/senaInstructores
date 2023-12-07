@@ -16,6 +16,9 @@ app.secret_key = sec_config['SECRET_KEY']
 now = datetime.now()
 year = now.strftime("%Y")
 
+# Origen folder where many xls's are 
+aprendiz_origen_path = "../fichas_evaluacion_instructores/ARRIVE/APRENDICES/"
+
 # Folder to aprendiz sqlite3
 Sqlite_aprendiz_destiny_path = "../fichas_evaluacion_instructores/laprend/aprendiz.db"
 # Folder to save csvs apprentice
@@ -137,14 +140,14 @@ def loadAprendicesMany():
     endDir = crearAprendizFolder()
 
     # Load only xls, xlsx files
-    for file in os.listdir(origen_path):
+    for file in os.listdir(aprendiz_origen_path):
         if file.endswith('.xls') or file.endswith('.xlsx'):
             ficha1 = []
             ficha = ""
             nnf = 6
 
             # Get ficha number
-            data = pd.read_excel(io=origen_path + file, header=None)
+            data = pd.read_excel(io=aprendiz_origen_path + file, header=None)
             fechaReporte = data.iat[3,2]
             celx = data.iat[1,2]
             for i in celx:
@@ -155,7 +158,7 @@ def loadAprendicesMany():
 
             # Delete first 4 rows from file
             filenamex = file.split('.')
-            dfx = pd.read_excel(io=origen_path + file, header=None)
+            dfx = pd.read_excel(io=aprendiz_origen_path + file, header=None)
             df1 = dfx.drop(dfx.index[0:4])
             df1.reset_index(drop=True, inplace=True)
             df1.drop(index=4)
@@ -163,25 +166,25 @@ def loadAprendicesMany():
             df1 = df1[1:]
 
             # Add columns for fechaReporte and ficha
-            df1['fecha_reporte'] = fechaReporte
+            # df1['fecha_reporte'] = fechaReporte
             df1['ficha'] = ficha
 
             # Save processed sheets into one master dataframe
             allApren.append(df1)
 
-            # Join all files in one dataframe
-        dataframe = pd.concat(allApren, axis=0)
-            # clean columns names and data
-        dataframe = clean_colname(dataframe)
-            # save to csv
-        dataframe.to_csv(endDir + "allAprendices.csv", index=False)
-        
-            # DATABASE
-        conn = sql3.connect(Sqlite_aprendiz_destiny_path)
-        dataframe.to_sql(name="aprendices", con=conn, if_exists="append", index=False)
-        conn.close()
+        # Join all files in one dataframe
+    dataframe = pd.concat(allApren, axis=0)
+        # clean columns names and data
+    dataframe = clean_data_aprendiz(dataframe)
+        # save to csv
+    dataframe.to_csv("../fichas_evaluacion_instructores/laprend/II_SEM_2023/allAprendices.csv", index=False, header=False, mode="a")
+    
+        # DATABASE
+    conn = sql3.connect(Sqlite_aprendiz_destiny_path)
+    dataframe.to_sql(name="aprendices", con=conn, if_exists="append", index=False)
+    conn.close()
 
-        return redirect("aprendiz")
+    return redirect("aprendiz")
 
 
 @app.route('/loadInstructores', methods=['GET', 'POST'])
